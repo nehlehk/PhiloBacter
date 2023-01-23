@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+
+
+    <data
+id="wholegenome"
+spec="Alignment"
+name="alignment">
+
+                </data>
+
+
+    
+<map name="Uniform" >beast.math.distributions.Uniform</map>
+<map name="Exponential" >beast.math.distributions.Exponential</map>
+<map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal" >beast.math.distributions.Normal</map>
+<map name="Beta" >beast.math.distributions.Beta</map>
+<map name="Gamma" >beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
+<map name="prior" >beast.math.distributions.Prior</map>
+<map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
+<map name="OneOnX" >beast.math.distributions.OneOnX</map>
+
+
+<run id="mcmc" spec="MCMC" chainLength="1000000">
+    <state id="state" spec="State" storeEvery="5000">
+        <tree id="Tree.t:wholegenome" spec="beast.evolution.tree.Tree" name="stateNode">
+            <taxonset id="TaxonSet.wholegenome" spec="TaxonSet">
+                <alignment idref="wholegenome"/>
+            </taxonset>
+        </tree>
+        <parameter id="freqParameter.s:wholegenome" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+        <parameter id="rateAC.s:wholegenome" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="rateAG.s:wholegenome" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="rateAT.s:wholegenome" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="rateCG.s:wholegenome" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="rateGT.s:wholegenome" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="popSize.t:wholegenome" spec="parameter.RealParameter" name="stateNode">0.3</parameter>
+    </state>
+
+    <init id="RandomTree.t:wholegenome" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:wholegenome" taxa="@wholegenome">
+        <populationModel id="ConstantPopulation0.t:wholegenome" spec="ConstantPopulation">
+            <parameter id="randomPopSize.t:wholegenome" spec="parameter.RealParameter" name="popSize">1.0</parameter>
+        </populationModel>
+    </init>
+
+    <distribution id="posterior" spec="util.CompoundDistribution">
+        <distribution id="prior" spec="util.CompoundDistribution">
+            <distribution id="CoalescentConstant.t:wholegenome" spec="Coalescent">
+                <populationModel id="ConstantPopulation.t:wholegenome" spec="ConstantPopulation" popSize="@popSize.t:wholegenome"/>
+                <treeIntervals id="TreeIntervals.t:wholegenome" spec="TreeIntervals" tree="@Tree.t:wholegenome"/>
+            </distribution>
+            <prior id="FrequenciesPrior.s:wholegenome" name="distribution" x="@freqParameter.s:wholegenome">
+                <Uniform id="Uniform.3" name="distr"/>
+            </prior>
+            <prior id="PopSizePrior.t:wholegenome" name="distribution" x="@popSize.t:wholegenome">
+                <OneOnX id="OneOnX.1" name="distr"/>
+            </prior>
+            <prior id="RateACPrior.s:wholegenome" name="distribution" x="@rateAC.s:wholegenome">
+                <Gamma id="Gamma.0" name="distr">
+                    <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.05</parameter>
+                    <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">10.0</parameter>
+                </Gamma>
+            </prior>
+            <prior id="RateAGPrior.s:wholegenome" name="distribution" x="@rateAG.s:wholegenome">
+                <Gamma id="Gamma.1" name="distr">
+                    <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha">0.05</parameter>
+                    <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta">20.0</parameter>
+                </Gamma>
+            </prior>
+            <prior id="RateATPrior.s:wholegenome" name="distribution" x="@rateAT.s:wholegenome">
+                <Gamma id="Gamma.2" name="distr">
+                    <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="alpha">0.05</parameter>
+                    <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="beta">10.0</parameter>
+                </Gamma>
+            </prior>
+            <prior id="RateCGPrior.s:wholegenome" name="distribution" x="@rateCG.s:wholegenome">
+                <Gamma id="Gamma.3" name="distr">
+                    <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="alpha">0.05</parameter>
+                    <parameter id="RealParameter.8" spec="parameter.RealParameter" estimate="false" name="beta">10.0</parameter>
+                </Gamma>
+            </prior>
+            <prior id="RateGTPrior.s:wholegenome" name="distribution" x="@rateGT.s:wholegenome">
+                <Gamma id="Gamma.5" name="distr">
+                    <parameter id="RealParameter.11" spec="parameter.RealParameter" estimate="false" name="alpha">0.05</parameter>
+                    <parameter id="RealParameter.12" spec="parameter.RealParameter" estimate="false" name="beta">10.0</parameter>
+                </Gamma>
+            </prior>
+        </distribution>
+        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+            <distribution id="treeLikelihood.wholegenome" spec="ThreadedTreeLikelihood" data="@wholegenome" tree="@Tree.t:wholegenome" useAmbiguities="true">
+                <siteModel id="SiteModel.s:wholegenome" spec="SiteModel">
+                    <parameter id="mutationRate.s:wholegenome" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
+                    <parameter id="gammaShape.s:wholegenome" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
+                    <parameter id="proportionInvariant.s:wholegenome" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                    <substModel id="gtr.s:wholegenome" spec="GTR" rateAC="@rateAC.s:wholegenome" rateAG="@rateAG.s:wholegenome" rateAT="@rateAT.s:wholegenome" rateCG="@rateCG.s:wholegenome" rateGT="@rateGT.s:wholegenome">
+                        <parameter id="rateCT.s:wholegenome" spec="parameter.RealParameter" estimate="false" lower="0.0" name="rateCT">1.0</parameter>
+                        <frequencies id="estimatedFreqs.s:wholegenome" spec="Frequencies" frequencies="@freqParameter.s:wholegenome"/>
+                    </substModel>
+                </siteModel>
+                <branchRateModel id="StrictClock.c:wholegenome" spec="beast.evolution.branchratemodel.StrictClockModel">
+                    <parameter id="clockRate.c:wholegenome" spec="parameter.RealParameter" estimate="false" name="clock.rate">1.0</parameter>
+                </branchRateModel>
+            </distribution>
+        </distribution>
+    </distribution>
+
+    <operator id="FrequenciesExchanger.s:wholegenome" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
+        <parameter idref="freqParameter.s:wholegenome"/>
+    </operator>
+
+    <operator id="RateACScaler.s:wholegenome" spec="ScaleOperator" parameter="@rateAC.s:wholegenome" scaleFactor="0.5" weight="0.1"/>
+
+    <operator id="RateAGScaler.s:wholegenome" spec="ScaleOperator" parameter="@rateAG.s:wholegenome" scaleFactor="0.5" weight="0.1"/>
+
+    <operator id="RateATScaler.s:wholegenome" spec="ScaleOperator" parameter="@rateAT.s:wholegenome" scaleFactor="0.5" weight="0.1"/>
+
+    <operator id="RateCGScaler.s:wholegenome" spec="ScaleOperator" parameter="@rateCG.s:wholegenome" scaleFactor="0.5" weight="0.1"/>
+
+    <operator id="RateGTScaler.s:wholegenome" spec="ScaleOperator" parameter="@rateGT.s:wholegenome" scaleFactor="0.5" weight="0.1"/>
+
+    <operator id="CoalescentConstantTreeScaler.t:wholegenome" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:wholegenome" weight="3.0"/>
+
+    <operator id="CoalescentConstantTreeRootScaler.t:wholegenome" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:wholegenome" weight="3.0"/>
+
+    <operator id="CoalescentConstantUniformOperator.t:wholegenome" spec="Uniform" tree="@Tree.t:wholegenome" weight="30.0"/>
+
+    <operator id="CoalescentConstantSubtreeSlide.t:wholegenome" spec="SubtreeSlide" tree="@Tree.t:wholegenome" weight="15.0"/>
+
+    <operator id="CoalescentConstantNarrow.t:wholegenome" spec="Exchange" tree="@Tree.t:wholegenome" weight="15.0"/>
+
+    <operator id="CoalescentConstantWide.t:wholegenome" spec="Exchange" isNarrow="false" tree="@Tree.t:wholegenome" weight="3.0"/>
+
+    <operator id="CoalescentConstantWilsonBalding.t:wholegenome" spec="WilsonBalding" tree="@Tree.t:wholegenome" weight="3.0"/>
+
+    <operator id="PopSizeScaler.t:wholegenome" spec="ScaleOperator" parameter="@popSize.t:wholegenome" scaleFactor="0.75" weight="3.0"/>
+
+    <logger id="tracelog" spec="Logger" fileName="wholegenome.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+        <log idref="treeLikelihood.wholegenome"/>
+        <log id="TreeHeight.t:wholegenome" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:wholegenome"/>
+        <log idref="freqParameter.s:wholegenome"/>
+        <log idref="rateAC.s:wholegenome"/>
+        <log idref="rateAG.s:wholegenome"/>
+        <log idref="rateAT.s:wholegenome"/>
+        <log idref="rateCG.s:wholegenome"/>
+        <log idref="rateGT.s:wholegenome"/>
+        <log idref="popSize.t:wholegenome"/>
+        <log idref="CoalescentConstant.t:wholegenome"/>
+    </logger>
+
+    <logger id="screenlog" spec="Logger" logEvery="5000">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <logger id="treelog.t:wholegenome" spec="Logger" fileName="$(tree).trees" logEvery="5000" mode="tree">
+        <log id="TreeWithMetaDataLogger.t:wholegenome" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:wholegenome"/>
+    </logger>
+
+    <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
+
+</run>
+
+</beast>
+

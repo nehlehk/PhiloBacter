@@ -1,0 +1,90 @@
+{
+"model":{
+	"id":"treelikelihood",
+	"type": "treelikelihood",
+	"sitepattern":{
+		"id":"patterns",
+		"type":"sitepattern",		
+		"datatype":"nucleotide",
+		"partials": {
+		}
+
+	},
+	"sitemodel":{
+		"id": "sitemodel",
+		"type": "sitemodel",
+		"substitutionmodel":{
+			"id":"sm",
+			"type":"substitutionmodel",
+			"model":"gtr",
+			"datatype":"nucleotide",
+			"rates":{
+				"ac":{"id":"ac", "type":"parameter", "value":1, "lower":0, "upper":"infinity"},
+				"ag":{"id":"ag", "type":"parameter", "value":1, "lower":0, "upper":"infinity"},
+				"at":{"id":"at", "type":"parameter", "value":1, "lower":0, "upper":"infinity"},
+				"cg":{"id":"cg", "type":"parameter", "value":1, "lower":0, "upper":"infinity"},
+				"ct":{"id":"ct", "type":"parameter", "value":1, "lower":0, "upper":"infinity"}
+			},
+			"frequencies":{
+				"id":"freqs",
+				"type":"Simplex",
+				"values":[0.25,0.25,0.25,0.25] 
+			}
+		}	
+	},
+	"tree":{
+		"id":"tree",
+		"type":"tree",
+		"parameters":"tree.distances",
+		"newick": ""
+	}
+},
+"physher":[
+	{
+		"id":"metaopt",
+		"type":"optimizer",
+		"algorithm":"meta",
+		"precision":0.001,
+		"max": 10000,
+		"model":"&treelikelihood",
+		"list":[
+			{				
+				"id":"optbl",
+				"type":"optimizer",
+				"algorithm":"serial",
+				"model":"&treelikelihood",
+				"_parameters":["%tree.distances"],
+				"treelikelihood": "&treelikelihood",
+				"precision": 0.00000001
+			},
+			{				
+				"id":"opts",
+				"type":"optimizer",
+				"algorithm":"serial",
+				"model":"&treelikelihood",
+				"parameters":[
+					"$freqs",  "&ac", "&ag", "&at", "&cg", "&ct"
+				]
+			}
+		]
+	},
+	{
+		"id": "loo",
+		"type": "logger",
+		"models": "&tree",
+		"tree": true,
+		"internal": false,
+		"_file": "tree.tree"
+	},
+	{
+		"id": "log1",
+		"type": "logger",
+		"models": ["$freqs"]
+	},
+	{
+		"id": "log3",
+		"type": "logger",
+		"parameters": ["&ac", "&ag", "&at", "&cg", "&ct"]
+	}
+]
+}
