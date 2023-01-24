@@ -1,7 +1,6 @@
 # PhiloBacter
 PhiloBacter is a software package that detects recombination events and reconstructs a phylogenetic tree of bacterial genomes.
-
-In practice, PhiloBacter consists of two tools, the first can be used independently as a recombination detection tool. To simplify the usage of these tools, validate their result, and compare them to the other state-of-the-art methods, a pipeline has been built using Nextflow software.
+To simplify the usage of these tools, validate their result, and compare them to the other state-of-the-art methods, a pipeline has been built using Nextflow software.
 
 # Pipeline introduction
 
