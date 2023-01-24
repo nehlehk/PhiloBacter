@@ -9,8 +9,12 @@ The application of this pipeline can be classified into two modes. The first mod
 
 
 ### Dependencies
+
 Nextflow
+
 conda
+
+
 ### Instllation
 ### 1) Analysis mode
 In this case, the pipeline consists of two steps. The first step builds an initial tree from the sequence using RAxML. In the second step, suppose the user is only looking for recombination events and their boundaries in the genome or, in other words, looks for the mosaic pattern of the genome. In that case, the pipeline can respond to this request with good accuracy. In addition, the other option is also available if the user is interested in the phylogeny tree. However, the user does not need to set any parameters; if one runs the pipeline using the default settings, all the steps will be done automatically. 
