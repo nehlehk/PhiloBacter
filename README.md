@@ -12,7 +12,7 @@ In this case, the pipeline consists of two steps. The first step builds an initi
 The bonus capability is that this pipeline is not only specific to PhiloBacter. This is possible, if the user also wants to use two other well-known tools in this field, such as [ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) and [Gubbins](https://github.com/nickjcroucher/gubbins), and collect the final trees of all three methods. Here is the command to use the pipeline for real datasets:
 
 ```
-./nextflow main.nf --mode Analysis --seq genome.fasta  --method pb,cfml,gub
+./nextflow run main.nf --mode Analysis --seq genome.fasta  --method pb,cfml,gub
 ```
 "--seq" provides an option to introduce the desired aligned sequence (fasta format) to the pipeline, and "-- method" is used to specify the method for the analysis. pb for PhiloBacter, cfml for ClonalFrameML and gub for Gubbins.
 
@@ -35,7 +35,7 @@ The second mode of the pipeline is specified for experts and developers of recom
 There are various parameters for data simulation that can be adjusted according to the user's requirement, such as genome and recombination length or recombination rate, and time to the most recent ancestor (tMRCA):
 
 ```
-./nextflow main.nf --mode sim --genome 10 --genomelen 100000 --recomlen 500 --tMRCA 0.01 --recomrate 0.01 --nu_sim 0.05
+./nextflow run main.nf --mode sim --genome 10 --genomelen 100000 --recomlen 500 --tMRCA 0.01 --recomrate 0.01 --nu_sim 0.05
 ```
 
 # Required dependencies
