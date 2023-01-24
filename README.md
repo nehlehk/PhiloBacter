@@ -17,7 +17,7 @@ conda
 
 ### Instllation
 ```
- # Download repo
+# Download repo
 git clone https://github.com/nehlehk/PhiloBacter.git
 ```
 
