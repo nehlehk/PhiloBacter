@@ -6,27 +6,6 @@ To simplify the usage of these tools, validate their result, and compare them to
 
 The application of this pipeline can be classified into two modes. The first mode is for all users who have sequences of a group of bacteria and are interested to learn about recombination events or want to have an authentic and reliable phylogenetic tree of those bacteria that were not impacted by recombination. These users can choose the analysis mode to use the pipeline. 
 
-
-### Dependencies
-
-Nextflow
-
-conda
-
-
-### Instllation
-```
-# Download repo
-git clone https://github.com/nehlehk/PhiloBacter.git
-```
-
-If Nextflow doesn't appear to create the conda environment properly. Create manually.
-```
-conda env create -f PhiloBacter.yml
-conda activate PhiloBacter
-```
-
-
 ### 1) Analysis mode
 In this case, the pipeline consists of two steps. The first step builds an initial tree from the sequence using RAxML. In the second step, suppose the user is only looking for recombination events and their boundaries in the genome or, in other words, looks for the mosaic pattern of the genome. In that case, the pipeline can respond to this request with good accuracy. In addition, the other option is also available if the user is interested in the phylogeny tree. However, the user does not need to set any parameters; if one runs the pipeline using the default settings, all the steps will be done automatically. 
 
@@ -57,3 +36,23 @@ There are various parameters for data simulation that can be adjusted according 
 
 ```
 ./nextflow main.nf --mode sim --genome 10 --genomelen 100000 --recomlen 500 --tMRCA 0.01 --recomrate 0.01 --nu_sim 0.05
+
+
+### Dependencies
+
+Nextflow
+
+conda
+
+
+### Instllation
+```
+# Download repo
+git clone https://github.com/nehlehk/PhiloBacter.git
+```
+
+If Nextflow doesn't appear to create the conda environment properly. Create manually.
+```
+conda env create -f PhiloBacter.yml
+conda activate PhiloBacter
+```
