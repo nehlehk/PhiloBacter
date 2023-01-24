@@ -38,14 +38,14 @@ There are various parameters for data simulation that can be adjusted according 
 ./nextflow main.nf --mode sim --genome 10 --genomelen 100000 --recomlen 500 --tMRCA 0.01 --recomrate 0.01 --nu_sim 0.05
 ```
 
-### Dependencies
+# Dependencies
 
 Nextflow
 
 conda
 
 
-### Instllation
+# Instllation
 ```
 # Download repo
 git clone https://github.com/nehlehk/PhiloBacter.git
