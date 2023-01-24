@@ -40,9 +40,12 @@ There are various parameters for data simulation that can be adjusted according 
 
 # Required dependencies
 
-Nextflow
+Nextflow and Conda
 
-conda
+Nextflow can also be installed from Bioconda
+```
+conda install -c bioconda nextflow
+```
 
 
 # Instllation
